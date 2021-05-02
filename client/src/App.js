@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios'
+
+
+const handleSubmit = (e) => {
+  e.preventDefault()
+  const form = new FormData()
+  form.append('file',e.target.file.files[0])
+  form.append('user','Myles')
+  axios.post('http://localhost:8080/upload',form).then(res=>{
+    console.log(res)
+  }).catch(err=>{console.log(err)})
+}
+
+let id = 'video2';
+let id2 = 'video3';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <form encType="multipart/form-data" onSubmit={handleSubmit}>
+        <input type="file" name='file' />
+        <button type="submit">
+          send it
+        </button>
+      </form>
+      {id && <video src={`http://localhost:8080/stream0/${id}`} type='video/mp4' controls></video>}
+      {id2 && <video src={`http://localhost:8080/stream0/${id2}`} type='video/mp4' controls></video>}
     </div>
   );
 }

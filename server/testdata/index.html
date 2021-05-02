@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+    <style>
+        body {
+            display: flex;
+            position: relative;
+        }
+        .v2 {
+            position: absolute;
+            top: 10rem;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <video src="/video1" type='video/mp4' controls class='v1' autoplay></video>
+    <form action="/upload" method='POST' enctype="multipart/form-data">
+    <input type="file" name='file'>
+    <button type="submit">
+        send it
+    </button>
+    </form>
+    <video src="/video2" type='video/mp4' controls class='v2' autoplay></video>
+    <script>
+        let playButton2 = document.querySelector('.v2');
+        let playButton1 = document.querySelector('.v1');
+        // playButton2.playbackRate = 0.25;
+        document.addEventListener('click',()=>{
+            playButton1.play()
+            // speed()
+            playButton2.play()
+        })
+
+        const speed = () => {
+            let curSpeed = playButton2.playbackRate
+            if ( curSpeed < 1 ){playButton2.playbackRate = 3 }
+            else {playButton2.playbackRate = 0.2 }
+        }
+        // console.log(playButton)
+    </script>
+</body>
+</html>
