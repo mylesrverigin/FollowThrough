@@ -1,0 +1,15 @@
+.login {
+    &__form {
+        display: flex;
+        flex-direction: column;
+
+        &-input{
+            max-width: 150px;
+            margin-top: 2rem;
+        }
+
+        &-submit {
+            max-width: 150px;
+        }
+    }
+}
