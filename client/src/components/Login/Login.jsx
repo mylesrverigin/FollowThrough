@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import './login-style.scss'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 export default class Login extends Component {
+    updateLogin = this.props.updateLogin
+    history = this.props.history
+
     state = {
         formData : {
             user : '',
@@ -20,10 +24,14 @@ export default class Login extends Component {
 
     handleSubmit = (event) => {
         // verify login structure 
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOTA2ZjkzZmNiZDgzNDEwOGRiNDZmMCIsImlhdCI6MTYyMDE1MTA0Mn0.f0H3JsB-iIYk8qn48AA5wYob1yTiIPYCuaDKLTzSHYY"
+
         event.preventDefault()
-        axios.post('http://localhost:8080/user/login',this.state.formData)
+        axios.post('http://localhost:8080/user/login',this.state.formData,{'headers':{'auth':token}})
             .then(res=>{
-                console.log(res)
+                // verify status 200
+                this.updateLogin(res.data)
+                this.history.push('/')
             })
             .catch(err=>{
                 console.log(err)
@@ -50,6 +58,7 @@ export default class Login extends Component {
                         Login
                     </button>
                 </form>
+                <Link to='/signup'> Sign Up Here </Link>
             </div>
         )
     }

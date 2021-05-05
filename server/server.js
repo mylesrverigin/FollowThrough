@@ -2,9 +2,8 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
-const multer = require('multer')
-const GridFsStorage = require('multer-gridfs-storage')
 const GridStream = require('gridfs-stream')
+const tokenCheck = require('./routes/checktoken')
 
 // middleware 
 app.use(cors())
@@ -18,30 +17,9 @@ const uri = 'mongodb://localhost:27017/capstone'
 const userAuth = require('./routes/userAuth')
 app.use('/user',userAuth)
 
-//storage engine 
-const storage = new GridFsStorage({
-    url: uri,
-    file: (req, file) => {
-        return new Promise((resolve, reject) => {
-            // reject 
-            //resolve 
-            // rename
-            // reject('no type')
-            const fileInfo = {
-                filename: file.originalname,
-                bucketName: 'fs'
-            }
-            resolve(fileInfo)
-        })
-    }
-})
-const upload = multer({ storage })
-// upload routes 
-app.post('/upload', upload.single('file'), (req, res) => {
-    // do stuff with file info here 
-    console.log(req.body.user)
-    res.status(200).json({file:req.file})
-})
+// upload routes
+const upload = require('./routes/upload')
+app.use('/upload',upload)
 
 /// create streaming connection 
 const dbConn = mongoose.createConnection(uri, { useUnifiedTopology: true, useNewUrlParser: true });

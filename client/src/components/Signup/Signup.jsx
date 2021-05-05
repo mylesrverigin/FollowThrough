@@ -3,12 +3,15 @@ import axios from 'axios';
 import './signup-style.scss'
 
 export default class Signup extends Component {
+    updateLogin = this.props.updateLogin
+    history = this.props.history
+
     state = {
         signupForm:{
-            user:'Myles',
-            userEmail:'myles@email',
-            passwordInit:'123',
-            passwordVerify:'123'
+            user:'',
+            userEmail:'',
+            passwordInit:'',
+            passwordVerify:''
         }
     }
 
@@ -25,10 +28,11 @@ export default class Signup extends Component {
         // verify user pw and email
         axios.post('http://localhost:8080/user/signup',this.state.signupForm)
         .then(res=>{
-            console.log(res.status)
+            this.updateLogin(res.data)
+            this.history.push('/')
         })
         .catch(err=>{
-            console.log('this')
+            console.log(err)
         })
     }
 

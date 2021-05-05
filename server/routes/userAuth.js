@@ -1,6 +1,18 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose');
+var jwt = require('jsonwebtoken');
+
+// JWT 
+const JWT_DECODE_KEY = '2502675089'
+
+const newJwtToken = (info, key = JWT_DECODE_KEY) => {
+    return jwt.sign(info, key);
+}
+
+const decodeJwtToken = (token, key = JWT_DECODE_KEY) => {
+    return jwt.verify(token, key)
+}
 
 // mongoose schema 
 const UserInfoModel = require('../database/userInfoModel')
@@ -24,7 +36,14 @@ router.post('/signup', (req, res) => {
         dateJoined: Date.now()
     })
     newUserProfile.save().then(profile => {
-        return res.status(200).json(profile._id)
+        const newToken = newJwtToken({ id: profile._id })
+        return res.status(200).json({
+            id: profile._id,
+            username: profile.username,
+            prostatus: profile.isPro,
+            joined: profile.dateJoined,
+            token: newToken
+        })
     })
         .catch(saveError => {
             console.log(saveError)
@@ -33,30 +52,50 @@ router.post('/signup', (req, res) => {
 
 })
 
-router.post('/login',(req,res)=>{
+router.post('/login', (req, res) => {
     if (!connected) { return res.status(500).send('DataBase not Connected') }
     const info = req.body
-    UserInfoModel.findOne({}).or([{'username':info.user},{'email':info.user}]).exec()
-        .then(profile=>{
-            if (!profile){
+    UserInfoModel.findOne({}).or([{ 'username': info.user }, { 'email': info.user }]).exec()
+        .then(profile => {
+            if (!profile) {
                 return res.status(400).send('User Not Found')
-            }else{
-                if (profile.password === info.password){
+            } else {
+                if (profile.password === info.password) {
+                    // set global decoder for key 
+                    const newToken = newJwtToken({ id: profile._id })
                     return res.status(200).json({
-                        id:profile._id,
-                        username:profile.username,
-                        prostatus:profile.isPro,
-                        joined:profile.dateJoined
+                        id: profile._id,
+                        username: profile.username,
+                        prostatus: profile.isPro,
+                        joined: profile.dateJoined,
+                        token: newToken
                     })
                 }
-                else{
+                else {
                     return res.status(400).send('Invalid Password')
                 }
             }
         })
-        .catch(finderr=>{
+        .catch(finderr => {
             console.log(finderr)
         })
+})
+
+router.post('/getprofile', (req, res) => {
+    const token = req.body.token
+    if (!token) { return res.status(404).send('invalid') }
+    const decodedInfo = decodeJwtToken(token)
+    if (!decodedInfo) { return res.status(404).send('Invalid Token') }
+    UserInfoModel.findOne({ '_id': decodedInfo.id }, (searchError, profile) => {
+        if (searchError) { return res.status(404).send('cant find user') }
+        return res.status(200).json({
+            id: profile._id,
+            username: profile.username,
+            prostatus: profile.isPro,
+            joined: profile.dateJoined,
+            token: token
+        })
+    })
 })
 
 module.exports = router
