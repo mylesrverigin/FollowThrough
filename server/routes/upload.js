@@ -35,8 +35,11 @@ mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(
 })
 
 router.post('/',jwtTokenCheck,upload.single('file'),(req,res)=>{
+    // upload video route, checks if user has a valid token and then stores the video 
+    // needs a video owner ID and makes sure there is a video being uploaded  
+    // makes a record to refence video ID attaching owner ID, date created and if its public 
     const videoId = req.file ? req.file.id : null
-    const { private, owner } = req.body
+    const { private, owner, username } = req.body
 
     if ( !connected ){ return res.status(500).send('No DB connection')}
     if ( !videoId || !owner ){ 
@@ -47,17 +50,14 @@ router.post('/',jwtTokenCheck,upload.single('file'),(req,res)=>{
         user : owner,
         video : videoId,
         public : private,
+        username : username,
         timestampID : '', 
         uploadTime : Date.now()
     })
-    videoRecord.save()
-        .then( success => {
-            return res.status(200).json(success)
-        })
-        .catch( saveError => {
-            console.log(saveError)
-            return res.status(500).send('Error Saving')
-        })
+    videoRecord.save((saveErr, success)=>{
+        if (saveErr){ res.status(500).send('error Saving File')}
+        res.status(200).json(success)
+    })
 })
 
 module.exports = router

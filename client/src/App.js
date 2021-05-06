@@ -2,8 +2,11 @@ import axios from 'axios'
 import Signup from './components/Signup/Signup'
 import Login from './components/Login/Login'
 import { Component } from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { Route, Switch, withRouter} from 'react-router-dom'
 import LandingPage from './components/LandingPage/LandingPage'
+import VideoPlayer from './components/VideoPlayer/VideoPlayer'
+
+// this is the level all user info will live and be handed down into other components 
 
 class App extends Component {
   // load profile info in user has token saved 
@@ -11,12 +14,12 @@ class App extends Component {
     id: "",
     joined: 0,
     prostatus: false,
-    token: localStorage.getItem('followThrouhgAuth') || "",
+    token: localStorage.getItem('followThroughAuth') || "",
     username: ""
   }
 
   updateLogin = (data) => {
-    localStorage.setItem('followThrouhgAuth', data.token)
+    localStorage.setItem('followThroughAuth', data.token)
     this.setState({
       ...data
     })
@@ -29,7 +32,10 @@ class App extends Component {
           ...profile.data
         })
       })
-      .catch(err => { console.log(err) })
+      .catch(err => {
+        console.log('Fetch Info Failed')
+        this.props.history.push('/login')
+      })
   }
 
   componentDidMount = () => {
@@ -40,26 +46,17 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
         <div>
           <Switch>
-            <Route path='/' exact render={(routerProps) => { return <LandingPage props={this.state} /> }} />
+            <Route path='/' exact render={(routerProps) => { return <LandingPage info={this.state} {...routerProps}/> }} />
             <Route path='/login' render={(routerProps) => { return <Login updateLogin={this.updateLogin} history={routerProps.history} /> }} />
             <Route path='/signup' render={(routerProps) => { return <Signup updateLogin={this.updateLogin} history={routerProps.history} /> }} />
+            <Route path='/videoplayer/:video1' exact render={(routerProps) => { return <VideoPlayer player='single' {...routerProps}/> }} />
+            <Route path='/videoplayer/:video1/:video2' render={(routerProps) => { return <VideoPlayer player='double' {...routerProps}/> }} />
           </Switch>
-          {/* <form encType="multipart/form-data" onSubmit={handleSubmit}>
-          <input type="file" name='file' />
-          <button type="submit">
-            send it
-          </button>
-        </form>
-        {id && <video src={`http://localhost:8080/stream0/${id}`} type='video/mp4' id='video' controls></video>}
-        {id2 && <video src={`http://localhost:8080/stream0/${id2}`} type='video/mp4' controls></video>} */}
-          {/* <Signup /> */}
         </div>
-      </BrowserRouter>
     )
   }
 }
 
-export default App;
+export default withRouter(App);

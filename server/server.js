@@ -1,9 +1,6 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const mongoose = require('mongoose')
-const GridStream = require('gridfs-stream')
-const tokenCheck = require('./routes/checktoken')
 
 // middleware 
 app.use(cors())
@@ -21,17 +18,13 @@ app.use('/user',userAuth)
 const upload = require('./routes/upload')
 app.use('/upload',upload)
 
-/// create streaming connection 
-const dbConn = mongoose.createConnection(uri, { useUnifiedTopology: true, useNewUrlParser: true });
-let stream;
-dbConn.once('open', () => {
-    // created stream 
-    stream = GridStream(dbConn.db, mongoose.mongo)
-    stream.collection('fs')
-})
+// video que routes 
+const loadQue = require('./routes/loadQue')
+app.use('/videoQue',loadQue)
+
 // streaming routes 
 const videoStream = require('./routes/stream.js')
-app.use('/stream0',videoStream)
-app.use('/stream1',videoStream)
+app.use('/stream',videoStream)
+app.use('/streamAlt',videoStream)
 
 app.listen(PORT, () => { console.log(`running on ${PORT}`) })

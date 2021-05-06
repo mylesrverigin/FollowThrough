@@ -12,27 +12,23 @@ conn.once('open', function () {
     gridStream = GridStream(conn.db, mongoose.mongo);
 })
 
-const fileCheck = (name) => {
+const fileCheck = (id) => {
+    // checks the video we are trying to get exists 
     return new Promise((resolve,reject)=>{
-        gridStream.files.find({ 'filename': name }).toArray((err, files) => {
-            // check if files exist 
-            if (files.length > 0){resolve(files[0])}
-            else{ reject(false)}
+        gridStream.exist({'_id':id},(err,file)=>{
+            if (file){ return resolve(id)}
+            else{ return reject()}
         })
     })
 }
 
-// const test = require('../database/schema')
-// test.findOne({},(err,data)=>{
-//     console.log(data)
-// })
-
-router.get('/:name', (req, res) => {
-    fileCheck(req.params.name).then((info)=>{
+router.get('/:id', (req, res) => {
+    fileCheck(req.params.id).then((id)=>{
         // file exists start stream
         // timestamp query for each video here to see where to start
+        console.log('found stream')
         let readStream = gridStream.createReadStream({
-            filename: req.params.name,
+            _id: id,
         })
         readStream.pipe(res)
     })

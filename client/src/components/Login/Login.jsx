@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import './login-style.scss'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+// This is whre the User Logins in and gets a token from 
+
 
 export default class Login extends Component {
     updateLogin = this.props.updateLogin
@@ -24,10 +26,8 @@ export default class Login extends Component {
 
     handleSubmit = (event) => {
         // verify login structure 
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOTA2ZjkzZmNiZDgzNDEwOGRiNDZmMCIsImlhdCI6MTYyMDE1MTA0Mn0.f0H3JsB-iIYk8qn48AA5wYob1yTiIPYCuaDKLTzSHYY"
-
         event.preventDefault()
-        axios.post('http://localhost:8080/user/login',this.state.formData,{'headers':{'auth':token}})
+        axios.post('http://localhost:8080/user/login',this.state.formData)
             .then(res=>{
                 // verify status 200
                 this.updateLogin(res.data)

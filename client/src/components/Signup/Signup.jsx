@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import './signup-style.scss'
+import { Link } from 'react-router-dom'
+// This is the signup form for all new accounts
+
 
 export default class Signup extends Component {
     updateLogin = this.props.updateLogin
@@ -57,6 +60,7 @@ export default class Signup extends Component {
 
                     <button type='submit' className={`${bem}__form-button`}> Sign up</button>
                 </form>
+                <Link to='/login'> Already A Member?</Link>
             </div>
         )
     }

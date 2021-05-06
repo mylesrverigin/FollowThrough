@@ -12,6 +12,7 @@ mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(
 
 const jwtTokenCheck = (req, res, next) => {
     const authHeader = req.headers.auth;
+    // used to screen requests for routes, checks if token exists and can be converted to a valid user id in DB 
     if (!authHeader) { return res.status(403).send('Please Login') }
     jwt.verify(authHeader, JWT_KEY, (err, verified) => {
         if (err) {
