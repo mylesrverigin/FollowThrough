@@ -7,7 +7,8 @@ const UserVideosSchema = new mongoose.Schema({
     public:Boolean,
     username: String,
     timestampID:String,
-    uploadTime:Number
+    uploadTime:Number,
+    preview: String
 });
 
 // Model 

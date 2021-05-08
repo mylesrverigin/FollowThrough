@@ -4,7 +4,6 @@ import Login from './components/Login/Login'
 import { Component } from 'react'
 import { Route, Switch, withRouter} from 'react-router-dom'
 import LandingPage from './components/LandingPage/LandingPage'
-import VideoPlayer from './components/VideoPlayer/VideoPlayer'
 
 // this is the level all user info will live and be handed down into other components 
 
@@ -51,8 +50,6 @@ class App extends Component {
             <Route path='/' exact render={(routerProps) => { return <LandingPage info={this.state} {...routerProps}/> }} />
             <Route path='/login' render={(routerProps) => { return <Login updateLogin={this.updateLogin} history={routerProps.history} /> }} />
             <Route path='/signup' render={(routerProps) => { return <Signup updateLogin={this.updateLogin} history={routerProps.history} /> }} />
-            <Route path='/videoplayer/:video1' exact render={(routerProps) => { return <VideoPlayer player='single' {...routerProps}/> }} />
-            <Route path='/videoplayer/:video1/:video2' render={(routerProps) => { return <VideoPlayer player='double' {...routerProps}/> }} />
           </Switch>
         </div>
     )
