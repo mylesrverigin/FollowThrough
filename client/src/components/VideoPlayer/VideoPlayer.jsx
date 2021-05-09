@@ -109,98 +109,112 @@ export default class VideoPlayer extends Component {
 
     render() {
         let { video1, video2 } = this.props
-        console.log(video1)
         return (
-            <div className='player'>
-                {video1 && <div className='player__one'>
-                    <video
-                        src={`http://localhost:8080/stream/${video1}`}
-                        style={{ opacity: this.state.videoOneOpactiy }}
-                        type='video/mp4'
-                        id='videoOne'
-                        className='player__one-video'
-                        muted
-                    />
-                    <div className='player__one-controls'>
-                        <label htmlFor="videoOneOpacity"> Video Opacity </label>
-                        <input
-                            type="range"
-                            min="1"
-                            max="100"
-                            defaultValue='100'
-                            name='videoOneOpactiy'
-                            onChange={this.changeSliderValue}
+            <>
+                <div className='player'>
+                    {video1 && <div className='player__one'>
+                        <video
+                            src={`http://localhost:8080/stream/${video1}`}
+                            style={{ opacity: this.state.videoOneOpactiy }}
+                            type='video/mp4'
+                            id='videoOne'
+                            className='player__one-video'
+                            muted
                         />
-                        <label htmlFor="videoOneSpeed"> Video Speed </label>
-                        <input
-                            type="range"
-                            min="10"
-                            max="300"
-                            defaultValue='100'
-                            name='videoOneSpeed'
-                            onChange={this.changeSliderValue}
-                        />
-                        <div className='player__one-controls-buttons'>
-                            <button onClick={() => { this.singlePlay('videoOne') }}> Play </button>
-                            <button onClick={() => { this.setStartTime('videoOne') }}> Set Loop </button>
-                            <button onClick={() => { this.setVideoFromStartTime('videoOne') }}> Loop </button>
+                        <div className='player__one-controls'>
+                            <label
+                                htmlFor="videoOneOpacity"
+                                className='player__one-controls-label hidden'
+                            > Video Opacity </label>
+                            <input
+                                type="range"
+                                min="1"
+                                max="100"
+                                defaultValue='100'
+                                name='videoOneOpactiy'
+                                onChange={this.changeSliderValue}
+                                className='player__one-controls-slider hidden'
+                            />
+                            <label
+                                htmlFor="videoOneSpeed"
+                                className='player__one-controls-label'
+                            > Video Speed </label>
+                            <input
+                                type="range"
+                                min="10"
+                                max="300"
+                                defaultValue='100'
+                                name='videoOneSpeed'
+                                onChange={this.changeSliderValue}
+                                className='player__one-controls-slider'
+                            />
+                            <div className='player__one-controls-buttons'>
+                                <button onClick={() => { this.singlePlay('videoOne') }}> Play </button>
+                                <button onClick={() => { this.setStartTime('videoOne') }}> Set Loop </button>
+                                <button onClick={() => { this.setVideoFromStartTime('videoOne') }}> Loop </button>
+                            </div>
                         </div>
-                    </div>
-                </div>}
-                {video2 && <div className='player__two'>
-                    <video
-                        src={`http://localhost:8080/streamAlt/${video2}`}
-                        style={{ opacity: this.state.videoTwoOpactiy }}
-                        type='video/mp4'
-                        id='videoTwo'
-                        className='player__Two-video'
-                        muted
-                    />
-                    <div className='player__two-controls'>
-                        <label htmlFor="videoTwoOpacity"> Video Opacity </label>
-                        <input
-                            type="range"
-                            min="1"
-                            max="100"
-                            defaultValue='100'
-                            name='videoTwoOpactiy'
-                            onChange={this.changeSliderValue}
+                    </div>}
+                    {video2 && <div className='player__two'>
+                        <video
+                            src={`http://localhost:8080/streamAlt/${video2}`}
+                            style={{ opacity: this.state.videoTwoOpactiy }}
+                            type='video/mp4'
+                            id='videoTwo'
+                            className='player__two-video'
+                            muted
                         />
-                        <label htmlFor="videoTwoSpeed"> Video Speed </label>
-                        <input
-                            type="range"
-                            min="10"
-                            max="300"
-                            defaultValue='100'
-                            name='videoTwoSpeed'
-                            onChange={this.changeSliderValue}
-                        />
-                        <div className='player__two-controls-buttons'>
-                            <button onClick={() => { this.singlePlay('videoTwo') }}> Play </button>
-                            <button onClick={() => { this.setStartTime('videoTwo') }}> Set Loop </button>
-                            <button onClick={() => { this.setVideoFromStartTime('videoTwo') }}> Loop </button>
+                        <div className='player__two-controls'>
+                            <label htmlFor="videoTwoOpacity" className='player__two-controls-label hidden'> Video Opacity </label>
+                            <input
+                                type="range"
+                                min="1"
+                                max="100"
+                                defaultValue='100'
+                                name='videoTwoOpactiy'
+                                onChange={this.changeSliderValue}
+                                className='player__two-controls-slider  hidden'
+                            />
+                            <label htmlFor="videoTwoSpeed" className='player__two-controls-label'> Video Speed </label>
+                            <input
+                                type="range"
+                                min="10"
+                                max="300"
+                                defaultValue='100'
+                                name='videoTwoSpeed'
+                                onChange={this.changeSliderValue}
+                                className='player__two-controls-slider'
+                            />
+                            <div className='player__two-controls-buttons'>
+                                <button onClick={() => { this.singlePlay('videoTwo') }}> Play </button>
+                                <button onClick={() => { this.setStartTime('videoTwo') }}> Set Loop </button>
+                                <button onClick={() => { this.setVideoFromStartTime('videoTwo') }}> Loop </button>
+                            </div>
                         </div>
-                    </div>
-                </div>}
+                    </div>}
+                </div>
                 {video1 && video2 && <div className='player__allControls'>
-                    <button onClick={this.allplay}> Play All </button>
-                    <button onClick={this.videoSync}> Sync Speed </button>
-                    <button onClick={()=>{
-                        ['videoOne','videoTwo'].forEach(el=>{
-                            console.log(el)
-                            this.setVideoFromStartTime(el)
-                        })
-                    }}> Loop All </button>
-                    <label htmlFor="allVideoSpeed"> All Video Speed </label>
+                    <div className='player__allControls-buttons'>
+                        <button onClick={this.allplay}> Play All </button>
+                        <button onClick={this.videoSync}> Sync Speed </button>
+                        <button onClick={() => {
+                            ['videoOne', 'videoTwo'].forEach(el => {
+                                console.log(el)
+                                this.setVideoFromStartTime(el)
+                            })
+                        }}> Loop All </button>
+                    </div>
+                    <label htmlFor="allVideoSpeed" className='player__allControls-label'> All Video Speed </label>
                     <input
                         type="range"
                         min="10"
                         max="300"
                         defaultValue='100'
                         name='allVideoSpeed'
-                        onChange={this.multiVideoSpeedControl} />
+                        onChange={this.multiVideoSpeedControl} 
+                        className='player__allControls-slider'/>
                 </div>}
-            </div>
+            </>
         )
     }
 }

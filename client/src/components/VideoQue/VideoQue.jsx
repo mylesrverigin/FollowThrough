@@ -1,19 +1,26 @@
 import React from 'react'
 import './video-que-style.scss'
+import LoadMore from '../LoadMore/LoadMore'
 
-export default function VideoQue( { isPublic, videoArray, buttonFunction }) {
-    let owner = isPublic? 'Public':'Your'
+export default function VideoQue( { isPublic, videoArray, buttonFunction, menuOpen, closeMenu}) {
+    let owner = isPublic? 'Newest':'Personal'
+    let closeMenuKey = isPublic? 'publicMenuOpen':'privateMenuOpen';
     return (
-        <div>
-            <h2> {owner} Videos</h2>
+        <div className='videoque'>
+            <LoadMore content={`${owner} Videos`} handler={()=>{closeMenu(closeMenuKey,!menuOpen)}}/>
             {videoArray.map(video=>{
                 return (
-                    <div key={video._id} className='videotile'>
-                        <img src={`http://localhost:8080/stream/${video.preview}`} alt="" className='videotile-preview'/>
-                        <h3> {video.username} </h3>
-                        <p> {new Date(video.uploadTime).toDateString()}</p>
-                        <button onClick={()=>{buttonFunction('videoOne',video.video)}}> Set Video 1</button>
-                        <button onClick={()=>{buttonFunction('videoTwo',video.video)}}> Set Video 2</button>
+                    <div key={video._id} className={`videoque__videotile ${menuOpen? '':'hidden'}`}>
+                        <img src={`http://localhost:8080/stream/${video.preview}`} alt="" className='videoque__videotile-preview'/>
+                        
+                        <div className='videoque__videotile-textcontainer'>
+                        <h3 className={`videoque__videotile-user ${!isPublic && 'hideuser'}`}> {video.username} </h3>
+                        <p className='videoque__videotile-date'> {new Date(video.uploadTime).toDateString()}</p>
+                        <button onClick={()=>{buttonFunction('videoOne',video.video)}} className='videoque__videotile-button'> 
+                            Video Player 1</button>
+                        <button onClick={()=>{buttonFunction('videoTwo',video.video)}} className='videoque__videotile-button'> 
+                            Video Player 2</button>
+                        </div>
                     </div>
                 )
             })}

@@ -1,0 +1,41 @@
+@use '../style/variables.scss' as *;
+@use '../style/mixins.scss' as *;
+
+.loadmore {
+
+    &__container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &-content {
+            text-align: center;
+            font-size: 3rem;
+            margin: 0;
+            color: $cta;
+            width: 100%;
+            padding: 2rem 2rem;
+            border: 2px solid $text;
+            border-radius: 5rem;
+            margin-top: 2rem;
+            box-sizing: border-box;
+            max-width: 280px;
+
+            &:hover {
+                background-color: $text;
+            }
+    
+            @include tablet {
+                font-size: 3.6rem;
+                margin: 2rem 10rem 0;
+                max-width: 500px;
+            }
+    
+            @include desktop {
+                max-width: 740px;
+                margin: 2rem 25rem 0;
+            }
+        }
+    }
+}

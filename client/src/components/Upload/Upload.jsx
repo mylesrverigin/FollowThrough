@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import captureVideoFrame from 'capture-video-frame'
 import './upload-style.scss'
+import LoadMore from '../LoadMore/LoadMore'
 
 export default class Upload extends Component {
 
@@ -48,7 +49,6 @@ export default class Upload extends Component {
     }
 
     captureThumbnail = () => {
-        const video = document.querySelector('#upload-preview')
         const frame = captureVideoFrame('upload-preview','png')
         if (!frame){ return }
         this.setState({
@@ -58,26 +58,36 @@ export default class Upload extends Component {
 
     render() {
         return (
-            <div>
-                <form encType="multipart/form-data" id='uploadForm' onSubmit={this.handleUploadSubmit}>
-                    <input type="file" name='file' onChange={this.createPreview} />
+            <>
+            <LoadMore content='Upload Video' handler={()=>{this.props.closeMenu('uploadMenuOpen',!this.props.menuOpen)}}/>
+            <div className={`upload ${this.props.menuOpen? '':'hidden'}`}>
+                <form encType="multipart/form-data" id='uploadForm' className='upload__form' onSubmit={this.handleUploadSubmit}>
+                    <div className='upload__form-input-container'>
+                    <input type="file" name='file' onChange={this.createPreview} className='upload__form-input' />
+                    <button> Upload </button>
+                    </div>
 
-                    <label htmlFor="private"> Public Video?</label>
-                    <input type="radio" name='private' value={true} />
-                    <label htmlFor="private"> True </label>
-                    <input type="radio" name='private' defaultChecked value={false} />
-                    <label htmlFor="private"> False </label>
+                    <div>
+                    <label htmlFor="private" className='upload__form-label'> Public Video?</label>
+                    <input type="radio" name='private' value={true} className='upload__form-radio'/>
+                    <label htmlFor="private" className='upload__form-label'> True </label>
+                    <input type="radio" name='private' defaultChecked value={false} className='upload__form-radio'/>
+                    <label htmlFor="private" className='upload__form-label'> False </label>
+                    </div>
 
-                    <button type="submit">
+                    <button type="submit" className='upload__form-button'>
                         send it
                     </button>
-                </form>
-                <button onClick={this.captureThumbnail}> capture thumbnail</button>
-                {this.state.thumbnail && <img src={this.state.thumbnail.dataUri} alt=""  className='video-thumbnail'/>}
+                <div className='upload__preview-container'>
+                {this.state.thumbnail && <img src={this.state.thumbnail.dataUri} alt="" className='upload__thumbnail'/>}
                 {this.state.preview &&
-                    <video controls id='upload-preview' src={this.state.preview} className='video-preview'>
+                    <video controls id='upload-preview' src={this.state.preview} className='upload__preview'>
                     </video>}
+                </div>
+                <button type='button' onClick={this.captureThumbnail} className='upload__button'> capture thumbnail</button>
+                </form>
             </div>
+            </>
         )
     }
 }

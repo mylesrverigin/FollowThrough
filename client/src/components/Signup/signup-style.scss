@@ -1,18 +1,33 @@
-
+@use '../style/variables.scss' as *;
+@use '../style/mixins.scss' as *;
 
 .signup {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
     &__form {
         display: flex;
         flex-direction: column;
 
+        &-label {
+            @include default-label;
+        }
+
         &-input {
-            max-width: 150px;
-            margin-top: 2rem;
+            @include default-input;
         }
 
         &-button {
-            max-width: 150px;
+            @include default-button;
         }
+    }
+
+    &__signup {
+        color: $text;
     }
 
 }

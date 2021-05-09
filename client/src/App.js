@@ -4,6 +4,7 @@ import Login from './components/Login/Login'
 import { Component } from 'react'
 import { Route, Switch, withRouter} from 'react-router-dom'
 import LandingPage from './components/LandingPage/LandingPage'
+import './app.scss'
 
 // this is the level all user info will live and be handed down into other components 
 

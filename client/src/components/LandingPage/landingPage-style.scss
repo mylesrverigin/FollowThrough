@@ -1,0 +1,19 @@
+@use '../style/variables.scss' as *;
+@use '../style/mixins.scss' as *;
+
+.header {
+    display: flex;
+    padding: 0 3rem;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    border: 1px solid $text;
+    color: $cta;
+    font-size: 1.2rem;
+    border-radius: 5rem;
+    margin-bottom: 2rem;
+
+    &__text {
+        margin: 0;
+    }
+}

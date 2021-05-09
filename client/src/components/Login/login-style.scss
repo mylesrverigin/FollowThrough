@@ -1,15 +1,34 @@
+@use '../style/variables.scss' as *;
+@use '../style/mixins.scss' as *;
+
 .login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+
     &__form {
         display: flex;
         flex-direction: column;
+        align-items: center;
+        width: 100%;
 
         &-input{
-            max-width: 150px;
-            margin-top: 2rem;
+            @include default-input;
+        }
+
+        &-label {
+            @include default-label;
         }
 
         &-submit {
-            max-width: 150px;
+            @include default-button;
         }
+    }
+
+    &__signup{
+        color: $text;
     }
 }

@@ -43,24 +43,24 @@ export default class Signup extends Component {
         const bem = 'signup'
         const { user, userEmail } = {...this.state.signupForm}
         return (
-            <div>
+            <div className={bem}>
                 <form className={`${bem}__form`} autoComplete='off' onChange={this.handleInputChange} onSubmit={this.handleSubmit}>
 
-                    <input type="text" name='user' className={`${bem}__form-input`} defaultValue={user} placeholder='User Name'/>
                     <label htmlFor="user" className={`${bem}__form-label`}> User Name </label>
+                    <input type="text" name='user' className={`${bem}__form-input`} defaultValue={user} placeholder='User Name'/>
 
-                    <input type="email" name="userEmail" className={`${bem}__form-input`} defaultValue={userEmail} placeholder='Email'/>
                     <label htmlFor="userEmail" className={`${bem}__form-label`}> Recovery Email </label>
+                    <input type="email" name="userEmail" className={`${bem}__form-input`} defaultValue={userEmail} placeholder='Email'/>
 
-                    <input type="password" name='passwordInit' className={`${bem}__form-input`} placeholder='Password'/>
                     <label htmlFor="passwordIniti" className={`${bem}__form-label`}> Desired Password </label>
+                    <input type="password" name='passwordInit' className={`${bem}__form-input`} placeholder='Password'/>
 
-                    <input type="password" name='passwordVerify' className={`${bem}__form-input`} placeholder='Retype Password'/>
                     <label htmlFor="passwordVerify" className={`${bem}__form-label`}> Verify Password </label>
+                    <input type="password" name='passwordVerify' className={`${bem}__form-input`} placeholder='Retype Password'/>
 
                     <button type='submit' className={`${bem}__form-button`}> Sign up</button>
                 </form>
-                <Link to='/login'> Already A Member?</Link>
+                <Link to='/login'><h3 className={`${bem}__signup`}>  Already A Member? </h3></Link>
             </div>
         )
     }

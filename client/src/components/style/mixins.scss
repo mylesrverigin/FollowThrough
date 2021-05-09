@@ -1,0 +1,56 @@
+@use './variables.scss' as *;
+
+$small : 320px;
+$medium : 768px;
+$large : 1280px;
+
+@mixin  tablet {
+    @media ( min-width: $medium) {
+        @content;
+    }
+}
+
+@mixin  desktop {
+    @media ( min-width: $large) {
+        @content;
+    }
+}
+
+@mixin default-input {
+    padding: 0 1rem;
+    border-radius: 2rem;
+    border: 0;
+    outline: 0;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    height: 40px;
+    width: 100%;
+    max-width: 200px;
+    color: $cta;
+
+    &:focus {
+        border: 4px solid $cta;
+        caret-color: $cta;
+    }
+}
+
+@mixin default-label {
+    color: $cta;
+    font-size: 1.4rem;
+}
+
+@mixin default-button {
+    background-color: $cta;
+    outline: none;
+    border: none;
+    width: 100%;
+    padding: 1rem 0;
+    border-radius: 2rem;
+    color: $text;
+    margin-top: 1.2rem;
+    max-width: 200px;
+
+    &:hover {
+        background-color: $cta-hover;
+    }
+}

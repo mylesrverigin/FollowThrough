@@ -6,9 +6,10 @@ import VideoQue from '../VideoQue/VideoQue'
 import Upload from '../Upload/Upload'
 import Logout from '../Logout/Logout'
 import VideoPlayer from '../VideoPlayer/VideoPlayer'
+import LoadMore from '../LoadMore/LoadMore'
 
 // this is where everything outside of login and signup will live
-// user can look at there videos or other users videos 
+// user can look at their videos or other users videos 
 // they can start a player from here as well 
 
 
@@ -18,8 +19,11 @@ export default class LandingPage extends Component {
     axiosConfig = {}
 
     state = {
-        privateVideos : [],
-        publicVideos : [],
+        privateVideos : null,
+        publicVideos : null,
+        publicMenuOpen : false,
+        privateMenuOpen : true,
+        uploadMenuOpen : false,
         videoOne : '',
         videoTwo : ''
     }
@@ -37,10 +41,10 @@ export default class LandingPage extends Component {
         return this.axiosConfig
     }
 
-    setPublic = () => {
-        this.setState({
-            searchPublic : !this.state.searchPublic
-        })
+    updateState = (key,value) => {
+        let update = {}
+        update[key] = value
+        this.setState(update)
     }
 
     loadVideos = (isPublic) => {
@@ -62,6 +66,7 @@ export default class LandingPage extends Component {
     
     componentDidMount = () => {
         this.generateConfig(this.token)
+        this.loadVideos(true)
     }
 
     setVideo = (videoStr,videoId) => {
@@ -74,18 +79,38 @@ export default class LandingPage extends Component {
         return (
             <div>
                 {!this.token && <Redirect to='/login' />}
-                <header>
-                    <h2>
+                <header className='header'>
+                    <h2 className='header__text'>
                     Welcome {this.props.info.username}
                     </h2>
                     <Logout history={this.props.history}/>
                 </header>
                 <VideoPlayer video1={this.state.videoOne} video2={this.state.videoTwo}/>
-                {this.state.privateVideos && <VideoQue  key='privateVideo' isPublic={false} videoArray={this.state.privateVideos} buttonFunction={this.setVideo}/>}
-                {this.state.publicVideos &&<VideoQue key='publicVideo' isPublic={true} videoArray={this.state.publicVideos} buttonFunction={this.setVideo}/>}
-                <button onClick={()=>{this.loadVideos(false)}}> Private</button>
-                <button onClick={()=>{this.loadVideos(true)}}> Public </button>
-                <Upload info={this.props.info} axiosConfig={this.returnConfig}/>
+
+                {!this.state.privateVideos && <LoadMore 
+                                                content='your Videos' 
+                                                handler={this.loadVideos}/>}
+                {this.state.privateVideos && <VideoQue  
+                                                key='privateVideo' 
+                                                isPublic={false} 
+                                                videoArray={this.state.privateVideos} 
+                                                buttonFunction={this.setVideo}
+                                                menuOpen={this.state.privateMenuOpen}
+                                                closeMenu={this.updateState}/>}
+                {this.state.publicVideos &&<VideoQue 
+                                                key='publicVideo' 
+                                                isPublic={true} 
+                                                videoArray={this.state.publicVideos} 
+                                                buttonFunction={this.setVideo}
+                                                menuOpen={this.state.publicMenuOpen}
+                                                closeMenu={this.updateState}/>}
+                
+                <Upload 
+                    info={this.props.info} 
+                    axiosConfig={this.returnConfig}
+                    menuOpen={this.state.uploadMenuOpen}
+                    closeMenu={this.updateState}
+                    />
             </div>
         )
     }

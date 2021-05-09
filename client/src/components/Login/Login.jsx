@@ -10,9 +10,9 @@ export default class Login extends Component {
     history = this.props.history
 
     state = {
-        formData : {
-            user : '',
-            password : ''
+        formData: {
+            user: '',
+            password: ''
         }
     }
 
@@ -20,20 +20,20 @@ export default class Login extends Component {
         let update = {}
         update[event.target.name] = event.target.value
         this.setState({
-            formData:{...this.state.formData,...update}
+            formData: { ...this.state.formData, ...update }
         })
     }
 
     handleSubmit = (event) => {
         // verify login structure 
         event.preventDefault()
-        axios.post('http://localhost:8080/user/login',this.state.formData)
-            .then(res=>{
+        axios.post('http://localhost:8080/user/login', this.state.formData)
+            .then(res => {
                 // verify status 200
                 this.updateLogin(res.data)
                 this.history.push('/')
             })
-            .catch(err=>{
+            .catch(err => {
                 console.log(err)
             })
     }
@@ -41,24 +41,26 @@ export default class Login extends Component {
     render() {
         const bem = 'login'
         return (
-            <div>
+            <div className={bem}>
                 <form className={`${bem}__form`} onChange={this.handleChange} onSubmit={this.handleSubmit}>
 
-                    <input type="text" name='user' placeholder='Username or Email' className={`${bem}__form-input`}/>
                     <label htmlFor="user" className={`${bem}__form-label`}>
                         Username or Email
                     </label>
+                    <input type="text" name='user' placeholder='Username or Email' className={`${bem}__form-input`} />
 
-                    <input type="password" name='password' placeholder='Password' className={`${bem}__form-input`}/>
                     <label htmlFor="password" className={`${bem}__form-label`}>
                         Password
                     </label>
+                    <input type="password" name='password' placeholder='Password' className={`${bem}__form-input`} />
 
                     <button type='submit' className={`${bem}__form-submit`}>
                         Login
                     </button>
                 </form>
-                <Link to='/signup'> Sign Up Here </Link>
+                <Link to='/signup'>
+                    <h3 className={`${bem}__signup`} > Sign Up Here </h3>
+                </Link>
             </div>
         )
     }
