@@ -114,7 +114,7 @@ export default class VideoPlayer extends Component {
                 <div className='player'>
                     {video1 && <div className='player__one'>
                         <video
-                            src={`http://localhost:8080/stream/${video1}`}
+                            src={`${this.props.ROUTE}/stream/${video1}`}
                             style={{ opacity: this.state.videoOneOpactiy }}
                             type='video/mp4'
                             id='videoOne'
@@ -157,7 +157,7 @@ export default class VideoPlayer extends Component {
                     </div>}
                     {video2 && <div className='player__two'>
                         <video
-                            src={`http://localhost:8080/streamAlt/${video2}`}
+                            src={`${this.props.ROUTE}/streamAlt/${video2}`}
                             style={{ opacity: this.state.videoTwoOpactiy }}
                             type='video/mp4'
                             id='videoTwo'

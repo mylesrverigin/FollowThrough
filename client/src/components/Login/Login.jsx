@@ -27,7 +27,7 @@ export default class Login extends Component {
     handleSubmit = (event) => {
         // verify login structure 
         event.preventDefault()
-        axios.post('http://localhost:8080/user/login', this.state.formData)
+        axios.post(`${this.props.ROUTE}/user/login`, this.state.formData)
             .then(res => {
                 // verify status 200
                 this.updateLogin(res.data)

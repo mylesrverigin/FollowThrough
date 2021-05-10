@@ -21,7 +21,7 @@ export default class Upload extends Component {
         formData.append('owner', this.props.info.id)
         formData.append('thumbnail', this.state.thumbnail.blob)
         formData.append('username', this.props.info.username)
-        axios.post('http://localhost:8080/upload', formData, this.props.axiosConfig())
+        axios.post(`${this.props.ROUTE}/upload`, formData, this.props.axiosConfig())
             .then(res => {
                 event.target.reset()
             })

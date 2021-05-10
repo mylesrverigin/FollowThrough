@@ -29,7 +29,7 @@ export default class Signup extends Component {
     handleSubmit = (event) => {
         event.preventDefault()
         // verify user pw and email
-        axios.post('http://localhost:8080/user/signup',this.state.signupForm)
+        axios.post(`${this.props.ROUTE}/user/signup`,this.state.signupForm)
         .then(res=>{
             this.updateLogin(res.data)
             this.history.push('/')

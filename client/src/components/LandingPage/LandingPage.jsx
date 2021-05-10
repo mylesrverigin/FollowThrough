@@ -51,7 +51,7 @@ export default class LandingPage extends Component {
         let [queryKey,queryValue] = isPublic? ['public',true]:['user',this.props.info.id] ;
         let query = {}
         query[queryKey] = queryValue
-        axios.post('http://localhost:8080/videoQue',{query},this.axiosConfig)
+        axios.post(`${this.props.ROUTE}/videoQue`,{query},this.axiosConfig)
             .then(res=>{
                 // if videos are public or private save them
                 let stateKey = queryKey === 'user'? 'privateVideos' : 'publicVideos';
@@ -85,7 +85,7 @@ export default class LandingPage extends Component {
                     </h2>
                     <Logout history={this.props.history}/>
                 </header>
-                <VideoPlayer video1={this.state.videoOne} video2={this.state.videoTwo}/>
+                <VideoPlayer video1={this.state.videoOne} video2={this.state.videoTwo} ROUTE={this.props.ROUTE}/>
 
                 {!this.state.privateVideos && <LoadMore 
                                                 content='your Videos' 
@@ -96,20 +96,23 @@ export default class LandingPage extends Component {
                                                 videoArray={this.state.privateVideos} 
                                                 buttonFunction={this.setVideo}
                                                 menuOpen={this.state.privateMenuOpen}
-                                                closeMenu={this.updateState}/>}
+                                                closeMenu={this.updateState}
+                                                ROUTE={this.props.ROUTE}/>}
                 {this.state.publicVideos &&<VideoQue 
                                                 key='publicVideo' 
                                                 isPublic={true} 
                                                 videoArray={this.state.publicVideos} 
                                                 buttonFunction={this.setVideo}
                                                 menuOpen={this.state.publicMenuOpen}
-                                                closeMenu={this.updateState}/>}
+                                                closeMenu={this.updateState}
+                                                ROUTE={this.props.ROUTE}/>}
                 
                 <Upload 
                     info={this.props.info} 
                     axiosConfig={this.returnConfig}
                     menuOpen={this.state.uploadMenuOpen}
                     closeMenu={this.updateState}
+                    ROUTE={this.props.ROUTE}
                     />
             </div>
         )

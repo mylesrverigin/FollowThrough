@@ -6,7 +6,9 @@ import { Route, Switch, withRouter} from 'react-router-dom'
 import LandingPage from './components/LandingPage/LandingPage'
 import './app.scss'
 
+
 // this is the level all user info will live and be handed down into other components 
+const ROUTE = `${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_PORT}`
 
 class App extends Component {
   // load profile info in user has token saved 
@@ -26,7 +28,7 @@ class App extends Component {
   }
 
   fetchProfile = (token) => {
-    axios.post('http://localhost:8080/user/getprofile', { token })
+    axios.post(`${ROUTE}/user/getprofile`, { token })
       .then(profile => {
         this.setState({
           ...profile.data
@@ -49,9 +51,9 @@ class App extends Component {
         <div>
           <Switch>
             {document.title = 'Follow Through'}
-            <Route path='/' exact render={(routerProps) => { return <LandingPage info={this.state} {...routerProps}/> }} />
-            <Route path='/login' render={(routerProps) => { return <Login updateLogin={this.updateLogin} history={routerProps.history} /> }} />
-            <Route path='/signup' render={(routerProps) => { return <Signup updateLogin={this.updateLogin} history={routerProps.history} /> }} />
+            <Route path='/' exact render={(routerProps) => { return <LandingPage info={this.state} {...routerProps} ROUTE={ROUTE}/> }} />
+            <Route path='/login' render={(routerProps) => { return <Login updateLogin={this.updateLogin} history={routerProps.history} ROUTE={ROUTE}/> }} />
+            <Route path='/signup' render={(routerProps) => { return <Signup updateLogin={this.updateLogin} history={routerProps.history} ROUTE={ROUTE}/> }} />
           </Switch>
         </div>
     )

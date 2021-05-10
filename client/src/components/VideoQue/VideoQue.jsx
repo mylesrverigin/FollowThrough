@@ -2,7 +2,7 @@ import React from 'react'
 import './video-que-style.scss'
 import LoadMore from '../LoadMore/LoadMore'
 
-export default function VideoQue( { isPublic, videoArray, buttonFunction, menuOpen, closeMenu}) {
+export default function VideoQue( { isPublic, videoArray, buttonFunction, menuOpen, closeMenu, ROUTE}) {
     let owner = isPublic? 'Newest':'Personal'
     let closeMenuKey = isPublic? 'publicMenuOpen':'privateMenuOpen';
     return (
@@ -11,7 +11,7 @@ export default function VideoQue( { isPublic, videoArray, buttonFunction, menuOp
             {videoArray.map(video=>{
                 return (
                     <div key={video._id} className={`videoque__videotile ${menuOpen? '':'hidden'}`}>
-                        <img src={`http://localhost:8080/stream/${video.preview}`} alt="" className='videoque__videotile-preview'/>
+                        {<img src={`${ROUTE}/stream/${video.preview}`} alt="" className='videoque__videotile-preview'/>}
                         
                         <div className='videoque__videotile-textcontainer'>
                         <h3 className={`videoque__videotile-user ${!isPublic && 'hideuser'}`}> {video.username} </h3>
