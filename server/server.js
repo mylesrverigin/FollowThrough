@@ -1,14 +1,14 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+require('dotenv').config();
 
 // middleware 
 app.use(cors())
 app.use(express.json())
 
 // dot env 
-const PORT = 8080
-const uri = 'mongodb://localhost:27017/capstone'
+const PORT = process.env.PORT || 8080
 
 // signup routes
 const userAuth = require('./routes/userAuth')

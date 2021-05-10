@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const jwtTokenCheck = require('./checktoken')
 
 // db connection 
-const URI = 'mongodb://localhost:27017/capstone'
+const URI = process.env.MONGODB_URI
 let connected = false
 mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
     connected = true

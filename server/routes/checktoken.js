@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const UserInfoModel = require('../database/userInfoModel')
 
-const URI = 'mongodb://localhost:27017/capstone'
-const JWT_KEY = '2502675089'
+const URI = process.env.MONGODB_URI
+const JWT_KEY = process.env.DECODE_KEY
 let connected = false
 mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
     connected = true

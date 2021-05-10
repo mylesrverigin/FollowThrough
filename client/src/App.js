@@ -48,6 +48,7 @@ class App extends Component {
     return (
         <div>
           <Switch>
+            {document.title = 'Follow Through'}
             <Route path='/' exact render={(routerProps) => { return <LandingPage info={this.state} {...routerProps}/> }} />
             <Route path='/login' render={(routerProps) => { return <Login updateLogin={this.updateLogin} history={routerProps.history} /> }} />
             <Route path='/signup' render={(routerProps) => { return <Signup updateLogin={this.updateLogin} history={routerProps.history} /> }} />

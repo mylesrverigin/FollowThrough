@@ -3,7 +3,7 @@ const router = express.Router()
 const mongoose = require('mongoose');
 const GridStream = require('gridfs-stream');
 
-const uri = 'mongodb://localhost:27017/capstone'
+const uri = process.env.MONGODB_URI
 
 let gridStream;
 

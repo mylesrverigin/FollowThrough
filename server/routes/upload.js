@@ -5,7 +5,7 @@ const GridFsStorage = require('multer-gridfs-storage')
 const multer = require('multer')
 
 const jwtTokenCheck = require('./checktoken')
-const URI = 'mongodb://localhost:27017/capstone'
+const URI = process.env.MONGODB_URI
 
 
 //storage engine 
