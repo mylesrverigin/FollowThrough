@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './video-player-style.scss'
+import CloseVideo from '../CloseVideo/CloseVideo'
 
 export default class VideoPlayer extends Component {
     // these are set as variables because setState has delay and they aren't dynamic
@@ -12,6 +13,17 @@ export default class VideoPlayer extends Component {
     state = {
         videoOneOpactiy: 1.0,
         videoTwoOpacity: 1.0,
+        overlay: false
+    }
+
+    toggleOverlay = () => {
+        let newOverlayValue = !this.state.overlay
+        let [newVideoOneOpacity,newVideoTwoOpacity] = !newOverlayValue? [1.0,1.0]:[0.5,0.7]
+        this.setState({
+            overlay: newOverlayValue,
+            videoOneOpactiy: newVideoOneOpacity,
+            videoTwoOpacity: newVideoTwoOpacity
+        })
     }
 
     changeSliderValue = (event) => {
@@ -62,6 +74,7 @@ export default class VideoPlayer extends Component {
     }
 
     videoSync = () => {
+        // deprecated 
         let v1 = document.getElementById('videoOne')
         let v2 = document.getElementById('videoTwo')
         if (!v1 || !v2) { return }
@@ -106,13 +119,12 @@ export default class VideoPlayer extends Component {
         video.play()
     }
 
-
     render() {
         let { video1, video2 } = this.props
         return (
             <>
                 <div className='player'>
-                    {video1 && <div className='player__one'>
+                    {video1 && <div className={`player__one ${this.state.overlay ? 'overlay' : 'relative'}`}>
                         <video
                             src={`${this.props.ROUTE}/stream/${video1}`}
                             style={{ opacity: this.state.videoOneOpactiy }}
@@ -121,20 +133,9 @@ export default class VideoPlayer extends Component {
                             className='player__one-video'
                             muted
                         />
-                        <div className='player__one-controls'>
-                            <label
-                                htmlFor="videoOneOpacity"
-                                className='player__one-controls-label hidden'
-                            > Video Opacity </label>
-                            <input
-                                type="range"
-                                min="1"
-                                max="100"
-                                defaultValue='100'
-                                name='videoOneOpactiy'
-                                onChange={this.changeSliderValue}
-                                className='player__one-controls-slider hidden'
-                            />
+                        {/* Yes I agree its hacky */}
+                        { video1 && video2 && !this.state.overlay && <CloseVideo handler={()=>{this.props.closeVideo('videoOne','')}}/>}
+                        <div className={`player__one-controls ${this.state.overlay ? 'hidden' : ''}`}>
                             <label
                                 htmlFor="videoOneSpeed"
                                 className='player__one-controls-label'
@@ -164,17 +165,8 @@ export default class VideoPlayer extends Component {
                             className='player__two-video'
                             muted
                         />
-                        <div className='player__two-controls'>
-                            <label htmlFor="videoTwoOpacity" className='player__two-controls-label hidden'> Video Opacity </label>
-                            <input
-                                type="range"
-                                min="1"
-                                max="100"
-                                defaultValue='100'
-                                name='videoTwoOpactiy'
-                                onChange={this.changeSliderValue}
-                                className='player__two-controls-slider  hidden'
-                            />
+                        { video1 && video2 && !this.state.overlay && <CloseVideo handler={()=>{this.props.closeVideo('videoTwo','')}}/>}
+                        <div className={`player__two-controls ${this.state.overlay ? 'hidden' : ''}`}>
                             <label htmlFor="videoTwoSpeed" className='player__two-controls-label'> Video Speed </label>
                             <input
                                 type="range"
@@ -194,25 +186,48 @@ export default class VideoPlayer extends Component {
                     </div>}
                 </div>
                 {video1 && video2 && <div className='player__allControls'>
-                    <div className='player__allControls-buttons'>
-                        <button onClick={this.allplay}> Play All </button>
-                        <button onClick={this.videoSync}> Sync Speed </button>
-                        <button onClick={() => {
-                            ['videoOne', 'videoTwo'].forEach(el => {
-                                console.log(el)
-                                this.setVideoFromStartTime(el)
-                            })
-                        }}> Loop All </button>
-                    </div>
-                    <label htmlFor="allVideoSpeed" className='player__allControls-label'> All Video Speed </label>
-                    <input
-                        type="range"
-                        min="10"
-                        max="300"
-                        defaultValue='100'
-                        name='allVideoSpeed'
-                        onChange={this.multiVideoSpeedControl} 
-                        className='player__allControls-slider'/>
+                    {this.state.overlay && <>
+                        <div className='player__allControls-buttons'>
+                            <button onClick={this.allplay}> Play </button>
+                            <button onClick={this.videoSync}> Sync </button>
+                            <button onClick={() => {
+                                ['videoOne', 'videoTwo'].forEach(el => {
+                                    this.setVideoFromStartTime(el)
+                                })
+                            }}> Loop </button>
+                        </div>
+                        <label htmlFor="allVideoSpeed" className='player__allControls-label'> Video Speed </label>
+                        <input
+                            type="range"
+                            min="10"
+                            max="300"
+                            defaultValue='100'
+                            name='allVideoSpeed'
+                            onChange={this.multiVideoSpeedControl}
+                            className='player__allControls-slider'/></>}
+                    {this.state.overlay && <> <label
+                        htmlFor="videoOneOpacity"
+                        className='player__one-controls-label'> Video 1 Opacity </label>
+                        <input
+                            type="range"
+                            min="1"
+                            max="100"
+                            defaultValue='100'
+                            name='videoOneOpactiy'
+                            id='videoOneOpacity'
+                            onChange={this.changeSliderValue}
+                            className='player__one-controls-slider'/>
+                        <label htmlFor="videoTwoOpacity" className='player__two-controls-label'> Video 2 Opacity </label>
+                        <input
+                            type="range"
+                            min="1"
+                            max="100"
+                            defaultValue='100'
+                            name='videoTwoOpactiy'
+                            id='videoTwoOpacity'
+                            onChange={this.changeSliderValue}
+                            className='player__two-controls-slider'/> </>}
+                    <button className='player__allControls-overlay' onClick={this.toggleOverlay}> Overlay </button>
                 </div>}
             </>
         )

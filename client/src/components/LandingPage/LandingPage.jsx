@@ -47,6 +47,11 @@ export default class LandingPage extends Component {
         this.setState(update)
     }
 
+    forceUpdate = () => {
+        this.loadVideos(true)
+        this.loadVideos(false)
+    }
+
     loadVideos = (isPublic) => {
         let [queryKey,queryValue] = isPublic? ['public',true]:['user',this.props.info.id] ;
         let query = {}
@@ -56,12 +61,18 @@ export default class LandingPage extends Component {
                 // if videos are public or private save them
                 let stateKey = queryKey === 'user'? 'privateVideos' : 'publicVideos';
                 let updatedState = {}
-                updatedState[stateKey] = res.data
+                updatedState[stateKey] = stateKey === 'publicVideos'? this.filterVideos(this.props.info.username,res.data): res.data
                 this.setState({...updatedState})
             })
             .catch(err=>{
                 console.log(err)
             })
+    }
+
+    filterVideos = (user, arr) => {
+        return arr.filter(el=>{
+            return el.username !== user
+        })
     }
     
     componentDidMount = () => {
@@ -85,7 +96,7 @@ export default class LandingPage extends Component {
                     </h2>
                     <Logout history={this.props.history}/>
                 </header>
-                <VideoPlayer video1={this.state.videoOne} video2={this.state.videoTwo} ROUTE={this.props.ROUTE}/>
+                <VideoPlayer video1={this.state.videoOne} video2={this.state.videoTwo} ROUTE={this.props.ROUTE} closeVideo={this.updateState}/>
 
                 {!this.state.privateVideos && <LoadMore 
                                                 content='your Videos' 
@@ -113,6 +124,7 @@ export default class LandingPage extends Component {
                     menuOpen={this.state.uploadMenuOpen}
                     closeMenu={this.updateState}
                     ROUTE={this.props.ROUTE}
+                    forceUpdate={this.forceUpdate}
                     />
             </div>
         )

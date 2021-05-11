@@ -28,11 +28,12 @@ const videoStream = require('./routes/stream.js')
 app.use('/stream',videoStream)
 app.use('/streamAlt',videoStream)
 
-if (process.env.NODE_ENV === 'production'){
+if (process.env.NODE_ENV !== 'production'){
+    console.log(path.join(__dirname, '../client/build/index.html'))
     app.use(express.static(path.join(__dirname,'../client/build')))
 
     app.get('*', (req,res)=>{
-        res.sendFile(path.join(__dirname, '../client/build/index.html'))
+        res.redirect(path.join(__dirname, '../client/build/index.html'))
     })
 }
 

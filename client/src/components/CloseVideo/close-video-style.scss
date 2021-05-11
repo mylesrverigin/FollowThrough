@@ -1,0 +1,24 @@
+@use '../style/variables.scss' as *;
+@use '../style/mixins.scss' as *;
+
+.exitButton {
+    position: absolute;
+    outline: none;
+    background-color: $cta;
+    color: $highenergy;
+    right: 2rem;
+    top: 1rem;
+    opacity: 0.3;
+
+    &:hover {
+        opacity: 0.5;
+    }
+
+    @include tablet {
+        right: 5rem;
+    }
+
+    @include desktop {
+        right: 10rem;
+    }
+}

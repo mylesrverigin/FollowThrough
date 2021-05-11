@@ -6,6 +6,7 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    padding-bottom: 20rem;
 
     &__form {
         width: 100%;
@@ -123,4 +124,9 @@
             }
         }
     }
+}
+
+.upload-success {
+    color: $text;
+    font-size: 1.7rem;
 }
