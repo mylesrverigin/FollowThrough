@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 
 // JWT 
@@ -16,16 +15,8 @@ const decodeJwtToken = (token, key = JWT_DECODE_KEY) => {
 
 // mongoose schema 
 const UserInfoModel = require('../database/userInfoModel')
-// db connection add to .env 
-const URI = process.env.MONGODB_URI
-let connected = false
-mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-    connected = true
-})
 
 router.post('/signup', (req, res) => {
-    // Creates a new account in the DB based on info sent in the body tag 
-    if (!connected) { return res.status(500).send('DataBase not Connected') }
     // verify info sent
     // verify account doesn't exist
     const userSignupInfo = req.body
@@ -55,7 +46,6 @@ router.post('/signup', (req, res) => {
 
 router.post('/login', (req, res) => {
     // Checks login credentials and returns a JWT token along with basic account info on success
-    if (!connected) { return res.status(500).send('DataBase not Connected') }
     const info = req.body
     UserInfoModel.findOne({}).or([{ 'username': info.user }, { 'email': info.user }]).exec()
         .then(profile => {

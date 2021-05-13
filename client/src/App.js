@@ -9,6 +9,7 @@ import './app.scss'
 
 // this is the level all user info will live and be handed down into other components 
 const ROUTE = `${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_PORT}`
+console.log(ROUTE)
 
 class App extends Component {
   // load profile info in user has token saved 

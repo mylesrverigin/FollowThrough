@@ -4,10 +4,7 @@ const UserInfoModel = require('../database/userInfoModel')
 
 const URI = process.env.MONGODB_URI
 const JWT_KEY = process.env.DECODE_KEY
-let connected = false
-mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-    connected = true
-})
+const DBConnection = require('../database/connection')
 
 
 const jwtTokenCheck = (req, res, next) => {

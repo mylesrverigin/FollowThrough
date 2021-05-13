@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-require('dotenv').config();
+require('dotenv').config()
 const path = require('path')
 
 // middleware 
@@ -14,6 +14,11 @@ const PORT = process.env.PORT || 8080
 // signup routes
 const userAuth = require('./routes/userAuth')
 app.use('/user',userAuth)
+
+// test route 
+app.get('/',(req,res)=>{
+    res.status(200).send('Hello from the API')
+})
 
 // upload routes
 const upload = require('./routes/upload')

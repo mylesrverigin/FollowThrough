@@ -4,11 +4,7 @@ const mongoose = require('mongoose');
 const jwtTokenCheck = require('./checktoken')
 
 // db connection 
-const URI = process.env.MONGODB_URI
-let connected = false
-mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-    connected = true
-})
+const DBConnection = require('../database/connection')
 
 // db model 
 const UserVideoModel = require('../database/userVideoModel');
@@ -16,7 +12,6 @@ const UserVideoModel = require('../database/userVideoModel');
 // todo filter out the current users videos when requesting 
 router.post('/',jwtTokenCheck,(req,res)=> {
     let {query} = req.body
-    if (!connected){return res.status(500).send('DB not connected')}
     if (!query){return res.status(404).send('malformed Query')}
     // validate query 
     UserVideoModel.find(query,(err,results)=> {
